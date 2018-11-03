@@ -1,0 +1,78 @@
+<div class="row p-5 bg-light">
+	<div class="col-sm-12 text-center">
+		<h2>{{evaluation.title}}</h2>
+		<small>{{convert(evaluation.deadline)}}</small>
+	</div>
+</div>
+<div class="row bg-light p-3">
+	<form [formGroup]="form" novalidate (ngSubmit)="submit($event)">
+		<div formArrayName="sections" class="col-sm-12 mb-4" *ngFor="let section of form.get('sections').controls; let index = index">
+			<div [formGroupName]="index">
+				<h5>{{index+1}} {{section.get('name').value}}</h5>
+				<div class="row pl-4" formArrayName="competences">
+					<div class="col-sm-12 mb-5" *ngFor="let competence of section.get('competences').controls;let i = index" [formGroupName]="i">
+						<h6>{{index+1}}.{{i+1}} {{competence.get('name').value}}</h6>
+						<p>{{competence.get('description').value}}</p>
+
+						<div *ngIf="competence.get('behaviors').value">
+							<div formArrayName="behavior">
+								<div [formGroupName]="cont" class="row pl-4 mb-3" *ngFor="let beh of competence.get('behavior').controls; let cont = index">
+									<div class="col-sm-12">
+										<h6>{{index+1}}.{{i+1}}.{{cont+1}} {{beh.get('title').value}}</h6>
+									</div>
+
+									<div class="col-sm-12" *ngFor="let opt of beh.get('options').value; let in = index">
+
+										<ng-container *ngIf="section.get('na').value; then naTrue; else naFalse"></ng-container>
+										<ng-template #naTrue>
+											<div class="custom-control custom-radio">
+												<input type="radio" id="radio_{{i}}_{{in}}_{{cont}}" class="custom-control-input" [value]="in" formControlName="answerBehavior">
+												<label class="custom-control-label" for="radio_{{i}}_{{in}}_{{cont}}">{{opt}}</label>
+											</div>
+										</ng-template>
+										<ng-template #naFalse>
+											<div class="custom-control custom-radio">
+												<input type="radio" id="radio_{{i}}_{{in}}_{{cont}}" class="custom-control-input" [value]="in+1" formControlName="answerBehavior">
+												<label class="custom-control-label" for="radio_{{i}}_{{in}}_{{cont}}">{{opt}}</label>
+											</div>
+										</ng-template>
+									</div>
+									<small *ngIf="beh.controls.answerBehavior.invalid" class="text-danger">Campo Obrigatório</small>
+								</div>
+							</div>
+						</div>
+
+						<div *ngIf="!competence.get('behaviors').value">
+							<div *ngFor="let opt of competence.get('questions').value; let in = index">
+
+								<ng-container *ngIf="section.get('na').value; then naTrue; else naFalse"></ng-container>
+								<ng-template #naTrue>
+
+									<div class="custom-control custom-radio">
+										<input type="radio" id="radio_{{i}}_{{in}}" class="custom-control-input" [value]="in" formControlName="answer">
+										<label class="custom-control-label" for="radio_{{i}}_{{in}}">{{opt}}</label>
+									</div>
+								</ng-template>
+								<ng-template #naFalse>
+									<div class="custom-control custom-radio">
+										<input type="radio" id="radio_{{i}}_{{in}}" class="custom-control-input" [value]="in+1" formControlName="answer">
+										<label class="custom-control-label" for="radio_{{i}}_{{in}}">{{opt}}</label>
+									</div>
+								</ng-template>
+
+							</div>
+							<small *ngIf="competence.controls.answer.invalid" class="text-danger">Campo Obrigatório</small>
+						</div>
+
+						<div class="form-group mt-3" *ngIf="section.get('evaluterComment').value">
+							<label for="comment">Comentário do avaliador</label>
+							<textarea class="form-control" id="comment" rows="3" formControlName="comment"></textarea>
+							<small *ngIf="competence.controls.comment.invalid" class="text-danger">Campo Obrigatório</small>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<button type="submit" class="btn btn-block btn-success mb-3" [disabled]="form.controls.sections.invalid">Enviar dados</button>
+	</form>
+</div>

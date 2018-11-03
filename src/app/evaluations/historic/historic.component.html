@@ -1,0 +1,22 @@
+<div class="row p-5">
+	<div class="col-sm-12 text-center mb-4">
+		<h2>Histórico</h2>
+	</div>
+	<div class="col-sm-6">
+		<evaluation *ngFor="let evaluation of allHistoric" [title]="evaluation.title" [date]="convert(evaluation.deadline)" [state]="theme(evaluation.deadline,evaluation.answers[0].evalutedAnswer.date)"
+		 (click)="active(evaluation)"></evaluation>
+	</div>
+	<div class="col-sm-6" *ngIf="activate">
+		<h2>Título</h2>
+		<p>{{activate.title}}</p>
+		<br>
+		<h2>Data</h2>
+		<p>{{convert(activate.deadline)}}</p>
+		<br>
+		<h2>Introdução</h2>
+		<p>{{activate.introduction}}</p>
+		<br>
+		<h2>Respondido em</h2>
+		<p>{{convert(activate.answers[0].evalutedAnswer.date)}}</p>
+	</div>
+</div>
