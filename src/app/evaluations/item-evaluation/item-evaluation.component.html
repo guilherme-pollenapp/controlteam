@@ -1,6 +1,7 @@
 <div class="card text-white bg-{{theme}} mb-3 ev-card">
 	<div class="card-body">
 		<h5 class="card-title">{{title}}</h5>
+		<p class="card-text" *ngIf="user">{{user}}</p>
 		<p class="card-text">{{date}}</p>
 	</div>
 </div>

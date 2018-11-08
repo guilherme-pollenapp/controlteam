@@ -28,16 +28,12 @@
 					Para Avaliar
 				</a>
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<a [routerLink]="['done']" class="dropdown-item">Feitas</a>
-					<a [routerLink]="['pending']" class="dropdown-item">Pendentes</a>
-					<a [routerLink]="['historic']" class="dropdown-item">Histórico</a>
+					<a [routerLink]="['toevalute','done']" class="dropdown-item">Feitas</a>
+					<a [routerLink]="['toevalute','pending']" class="dropdown-item">Pendentes</a>
+					<a [routerLink]="['toevalute','historic']" class="dropdown-item">Histórico</a>
 				</div>
 			</li>
 		</ul>
-		<form class="form-inline my-2 my-lg-0">
-			<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-		</form>
 	</div>
 </nav>
 <div class="container pt-4">

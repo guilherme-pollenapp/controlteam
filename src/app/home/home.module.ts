@@ -5,7 +5,7 @@ import { HomeRoutingModule } from './home.routing.module';
 import { EvaluationsModule } from '../evaluations/evaluations.module';
 import { RouterModule } from '../../../node_modules/@angular/router';
 import { EvaluationModule } from '../evaluation/evaluation.module';
-import { LoadingModule } from '../loading/loading.module';
+import { ToEvaluteModule } from '../to-evalute/to-evalute.module';
 
 @NgModule({
   imports: [
@@ -14,7 +14,7 @@ import { LoadingModule } from '../loading/loading.module';
     EvaluationsModule,
     RouterModule,
     EvaluationModule,
-    LoadingModule
+    ToEvaluteModule
   ],
   declarations: [HomeComponent]
 })

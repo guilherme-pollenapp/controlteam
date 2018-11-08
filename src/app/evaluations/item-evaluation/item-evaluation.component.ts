@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Evaluation } from '../evaluation';
 
 @Component({
   selector: 'evaluation',
@@ -10,9 +9,10 @@ export class ItemEvaluationComponent implements OnInit {
 
   @Input() title;
   @Input() date;
+  @Input() user = null;
   @Input() state = "open";
 
-  private theme = "success";
+  theme = "success";
 
   constructor() { }
 
