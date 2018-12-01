@@ -12,4 +12,19 @@
 		(click)="active(evaluation)">
 	</evaluation>
 	</div>
+	<div class="col-sm-6" *ngIf="activate">
+		<h2>Título</h2>
+		<p>{{activate.title}}</p>
+		<br>
+		<h2>Avaliado</h2>
+		<p>{{activate.evalutedName}}</p>
+		<br>
+		<h2>Data</h2>
+		<p>{{convert(activate.deadline)}}</p>
+		<br>
+		<h2>Introdução</h2>
+		<p>{{activate.introduction}}</p>
+		<br>
+		<button type="button" class="btn btn-outline-success btn-block" (click)="start()">Start</button>
+	</div>
 </div>

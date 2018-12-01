@@ -52,6 +52,13 @@ const appRoutes: Routes = [
                 resolve: {
                     evaluation: EvaluationResolver
                 }
+            },
+            {
+                path: 'evaluation/:id/:user',
+                component: EvaluationComponent,
+                resolve: {
+                    evaluation: EvaluationResolver
+                }
             }
         ]
     }

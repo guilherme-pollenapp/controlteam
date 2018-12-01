@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '../../../node_modules/@angular/router';
 import { EvaluationService } from './evaluation.service';
-import { Evaluation } from '../evaluations/evaluation';
 import { convertData } from '../utils/date';
 import { FormBuilder, FormGroup, Validators, FormArray } from '../../../node_modules/@angular/forms';
+import { ToEvaluteService } from '../to-evalute/to-evalute.service';
+import { Global } from '../services/global';
 
 @Component({
 	selector: 'app-evaluation',
@@ -12,24 +13,53 @@ import { FormBuilder, FormGroup, Validators, FormArray } from '../../../node_mod
 })
 export class EvaluationComponent implements OnInit {
 
-	evaluation: Evaluation;
+	evaluation: any;
 	convert = convertData;
+	user: any = null;
 
 	form: FormGroup;
+	evaluationId: any;
+
+	position: any;
 
 	constructor(
 		private route: ActivatedRoute,
 		private router: Router,
 		private EvaluationService: EvaluationService,
-		private fb: FormBuilder
+		private fb: FormBuilder,
+		private service: ToEvaluteService,
+		private global: Global
 	) { }
 
 	ngOnInit() {
 		this.evaluation = this.route.snapshot.data.evaluation[0];
 
+		this.route.params.subscribe(params => {
+			this.evaluationId = params.id
+			if (params.user){
+	
+				const evalutedPosition = this.evaluation.answers.filter(item => item.evaluted == this.user)[0]
+	
+				const evaluterPos = evalutedPosition.evaluterAnswer.filter(item => item.evaluter == this.global.user)[0]
+	
+				this.position = evaluterPos
+				this.user = params.user
+			} 
+		})
+
 		this.form = this.fb.group({
 			sections: this.fb.array(this.evaluation.questions.map((item: any, index) => this.createSection(item, index)))
 		})
+
+		this.evaluation = this.evaluation.answers.map(evaluted => {
+			evaluted.evaluterAnswer = evaluted.evaluterAnswer.map((evaluter, index) => {
+				evaluter.position = index;
+				return evaluter;
+			})
+
+			return evaluted
+		})
+
 	}
 
 	createSection(section, index): FormGroup {
@@ -104,11 +134,21 @@ export class EvaluationComponent implements OnInit {
 
 		let data = this.schema();
 
-		this.EvaluationService
-			.evalutedAnswer(this.evaluation._id.toString(), data)
-			.subscribe((result) => {
-				this.router.navigate(['home']);
-			})
+		if (this.user) {
+			this.service
+				.update(this.evaluationId, this.user, this.global.user, this.position.position, data)
+				.subscribe(result => {
+					console.log(result)
+					this.router.navigate(['home']);
+				})
+		}
+		else {
+			this.EvaluationService
+				.evalutedAnswer(this.evaluationId, data)
+				.subscribe((result) => {
+					this.router.navigate(['home']);
+				})
+		}
 	}
 
 	schema() {

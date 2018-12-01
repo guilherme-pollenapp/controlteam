@@ -30,4 +30,9 @@ export class ToEvaluteService {
 		return this.http
 			.get<Observable<Evaluation[]>>(`${this.url}evaluation/evaluter/${this.global.user}/historic`)
 	}
+
+	update(id, evaluted, evaluter, position, data) {
+		return this.http
+			.put<Observable<Evaluation[]>>(`${this.url}evaluation/evaluter/${id}/${evaluted}/${evaluter}/${position}`, data)
+	}
 }
